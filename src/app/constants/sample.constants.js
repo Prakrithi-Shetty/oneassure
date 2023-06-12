@@ -44,7 +44,7 @@ export const Meal = {
   APPETIZER: 'Appetizer',
 };
 
-const dummyData = [
+const  updatedData  = [
   {
     deliveryTime: "30 min",
     title: "Baked Sweet Potato with Avocado Pumpkin",
@@ -173,6 +173,10 @@ const dummyData = [
   },
   // Add more food objects as needed
 ];
+const dummyData = updatedData.map((item) => ({
+  ...item,
+  id: Math.random().toString(36).substr(2, 9), // Generate a random alphanumeric id
+}));
 
 export default dummyData;
 
