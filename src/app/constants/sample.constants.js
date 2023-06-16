@@ -54,6 +54,7 @@ const  updatedData  = [
     tags: [
       Season.AUTUMN,
       DietaryPreferences.GLUTEN_FREE,
+      DietaryPreferences.EGG_FREE,
       Meal.DINNER,
     ],
   },

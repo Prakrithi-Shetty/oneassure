@@ -4,49 +4,30 @@ import { useState } from 'react';
 import { Season, Meal, DietaryPreferences } from '../../constants/sample.constants';
 
 
+const selectedFilters = {
+    season: [],
+    dietaryPreferences: [],
+    meal:[]
+  };
+
+
+
 const FilterComponent = ({ onClickFilter }) => {
-    const [seasonFilters, setSeasonFilters] = useState([]);
-    const [dietFilters, setDietFilters] = useState([]);
-    const [mealFilters, setMealFilters] = useState([]);
 
-    const handleFilterChange = (event, filterType) => {
-        const { value, checked } = event.target;
-        onClickFilter(value, checked);
-        let updatedFilters = [];
+    const handleFilterChange = (event, filterType,option) => {
+        const {checked } = event.target;
 
-        switch (filterType) {
-            case 'season':
-                updatedFilters = [...seasonFilters];
-                break;
-            case 'diet':
-                updatedFilters = [...dietFilters];
-                break;
-            case 'meal':
-                updatedFilters = [...mealFilters];
-                break;
-            default:
-                break;
-        }
+        if (checked) {
+            selectedFilters[filterType].push(option);
+          } else {
+            selectedFilters[filterType] = selectedFilters[filterType].filter(
+              (item) => item !== option
+            );
+          }
+        
 
-        if (updatedFilters.includes(value)) {
-            updatedFilters = updatedFilters.filter((filter) => filter !== value);
-        } else {
-            updatedFilters.push(value);
-        }
-
-        switch (filterType) {
-            case 'season':
-                setSeasonFilters(updatedFilters);
-                break;
-            case 'diet':
-                setDietFilters(updatedFilters);
-                break;
-            case 'meal':
-                setMealFilters(updatedFilters);
-                break;
-            default:
-                break;
-        }
+        onClickFilter(selectedFilters);
+       
     };
 
     const renderCheckboxOptions = (options, filterType) => {
@@ -56,8 +37,8 @@ const FilterComponent = ({ onClickFilter }) => {
                     type="checkbox"
                     id={option}
                     value={option}
-                    checked={getFilterState(filterType).includes(option)}
-                    onChange={(event) => handleFilterChange(event, filterType)}
+                    checked={selectedFilters[filterType].includes(option)}
+                    onChange={(event) => handleFilterChange(event, filterType,option)}
                 />
                 <label htmlFor={option} style={{ color: "black", fontSize: 14, paddingLeft: 8 }}>
                     {option}
@@ -66,18 +47,7 @@ const FilterComponent = ({ onClickFilter }) => {
         ));
     };
 
-    const getFilterState = (filterType) => {
-        switch (filterType) {
-            case 'season':
-                return seasonFilters;
-            case 'diet':
-                return dietFilters;
-            case 'meal':
-                return mealFilters;
-            default:
-                return [];
-        }
-    };
+ 
 
     return (
         <div style={{ padding: 8 }}>
@@ -92,7 +62,7 @@ const FilterComponent = ({ onClickFilter }) => {
                 <h5 style={{ marginTop: 16, marginBottom: 4, color: 'black' }}>
                     <b>Dietary Preferences:</b>
                 </h5>
-                <ul>{renderCheckboxOptions(Object.values(DietaryPreferences), 'diet')}</ul>
+                <ul>{renderCheckboxOptions(Object.values(DietaryPreferences), 'dietaryPreferences')}</ul>
             </div>
 
             <div>
